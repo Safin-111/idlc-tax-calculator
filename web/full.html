@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title data-i18n="f.pageTitle">Full calculator</title>
+  <link rel="manifest" href="../manifest.webmanifest">
+  <meta name="theme-color" content="#D71920">
+  <link rel="stylesheet" href="../css/tokens.css">
+  <link rel="stylesheet" href="../css/web.css">
+</head>
+<body>
+  <header class="topbar">
+    <a href="../index.html" aria-label="IDLC"><img src="../assets/logo/idlc-logo-horizontal.jpg" alt="IDLC financing happiness"></a>
+    <div class="topbar__right">
+      <button type="button" class="langbtn" data-lang-toggle data-i18n="c.switchTo">বাংলা</button>
+      <div id="mode-switch" data-active="full"></div>
+    </div>
+  </header>
+
+  <main class="story">
+    <h1 data-i18n="f.h1">Five questions. Then your tax.</h1>
+    <div class="story__sub" id="year-line"></div>
+
+    <div class="rows">
+      <!-- 01 -->
+      <div class="row">
+        <span class="row__num">01</span>
+        <span class="row__label"><span data-i18n="f.q1">Who are you?</span> <span data-info="taxFreeLimit"></span></span>
+        <span class="row__control" id="cat-chips"></span>
+      </div>
+      <div class="extra" id="cat-more" hidden>
+        <div class="extra__chips" id="cat-extra-chips"></div>
+        <label class="check"><input type="checkbox" id="parent"><span data-i18n="f.parent">I am the parent or legal guardian of a person with disability</span></label>
+        <div class="extra__fields" id="parent-fields" hidden>
+          <label class="field field--small"><span data-i18n="f.children">How many such children?</span><input id="children" type="number" min="1" max="9" value="1" inputmode="numeric"></label>
+        </div>
+        <div class="small" id="parent-note"></div>
+      </div>
+
+      <!-- 02 -->
+      <div class="row">
+        <span class="row__num">02</span>
+        <span class="row__label"><span data-i18n="f.q2">What was your yearly salary?</span> <span data-info="taxFreePart"></span></span>
+        <span class="row__money">
+          <input class="input" id="salary" inputmode="numeric" autocomplete="off" placeholder="Tk 0" data-i18n-attr="aria-label:f.salaryAria;placeholder:q.salaryPh">
+          <span class="row__hint"><button type="button" class="linkbtn" id="other-toggle" aria-expanded="false" data-i18n="f.other">+ Other income</button></span>
+        </span>
+      </div>
+      <div class="extra" id="other-box" hidden>
+        <label class="field"><span data-i18n="f.otherLabel">Other income this year (rent, interest, business…)</span><input class="input" id="other" inputmode="numeric" autocomplete="off" placeholder="Tk 0" data-i18n-attr="placeholder:q.salaryPh"></label>
+      </div>
+
+      <!-- 03 -->
+      <div class="row">
+        <span class="row__num">03</span>
+        <span class="row__label"><span data-i18n="f.q3">What did you invest?</span> <span data-info="eligibleInvestment"></span></span>
+        <span class="row__money">
+          <input class="input" id="inv-total" inputmode="numeric" autocomplete="off" placeholder="Tk 0" data-i18n-attr="aria-label:f.totalAria;placeholder:q.salaryPh">
+          <span class="row__hint"><span id="inv-summary"></span> <button type="button" class="linkbtn" id="inv-toggle" aria-expanded="false" data-i18n="f.editList">edit list</button></span>
+        </span>
+      </div>
+      <div class="extra" id="inv-box" hidden>
+        <div class="invlist" id="inv-list"></div>
+        <div class="invnote" data-i18n="f.invNote"></div>
+      </div>
+
+      <!-- 04 -->
+      <div class="row">
+        <span class="row__num">04</span>
+        <span class="row__label"><span id="wealth-q"></span> <span data-info="wealthSurcharge"></span> <small><button type="button" class="linkbtn" id="whats-this" data-explain="wealthSurcharge" aria-expanded="false" data-i18n="f.whats">What's this?</button></small></span>
+        <span class="row__control" id="wealth-chips"></span>
+      </div>
+      <div class="extra" id="wealth-box" hidden>
+        <div class="extra__fields">
+          <label class="field"><span><span data-i18n="f.netWealth">Net wealth</span> <span data-info="netWealth"></span></span><input class="input" id="net-wealth" inputmode="numeric" autocomplete="off" placeholder="Tk 0" data-i18n-attr="placeholder:q.salaryPh"></label>
+          <label class="field field--small"><span data-i18n="f.cars">Cars in your name</span><input class="input" id="cars" type="number" min="0" value="0" inputmode="numeric"></label>
+          <label class="field field--small"><span data-i18n="f.sqft">Home size (sq ft)</span><input class="input" id="sqft" type="number" min="0" inputmode="numeric" placeholder="0"></label>
+        </div>
+      </div>
+
+      <!-- 05 -->
+      <div class="row">
+        <span class="row__num">05</span>
+        <span class="row__label" data-i18n="f.q5">When will you file?</span>
+        <span class="row__control" id="filing-chips"></span>
+      </div>
+    </div>
+  </main>
+
+  <div class="ribbon ribbon--tax" aria-live="polite">
+    <div class="ribbon__text"><span class="ribbon__label" data-i18n="f.taxToPay">YOUR TAX TO PAY</span><span class="ribbon__amount" id="tax-to-pay">Tk 0</span></div>
+  </div>
+
+  <section class="receipt">
+    <div class="receipt__col" id="how"></div>
+    <div class="receipt__col" id="slabs"></div>
+  </section>
+
+  <section class="story print-only">
+    <div class="kicker" data-i18n="f.pAnswers">YOUR ANSWERS</div>
+    <dl class="printans" id="print-answers"></dl>
+  </section>
+
+  <div class="actions no-print">
+    <button type="button" class="btn btn--red" id="download" data-i18n="c.pdf">Download PDF</button>
+    <button type="button" class="btn btn--grey" data-open-callback data-i18n="c.talk">Talk to an IDLC advisor</button>
+  </div>
+
+  <p class="foot"><span id="foot-main"></span><br><span data-i18n="f.footNote"></span></p>
+  <p class="draftnote" data-i18n="c.draft"></p>
+
+  <script src="../js/tax-rules.js"></script>
+  <script src="../js/tax-engine.js"></script>
+  <script src="../js/format.js"></script>
+  <script src="../js/strings.js"></script>
+  <script src="../js/i18n.js"></script>
+  <script src="../js/ui-common.js"></script>
+  <script src="../js/ui-full.js"></script>
+</body>
+</html>

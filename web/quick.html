@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title data-i18n="q.h1">Tax calculator</title>
+  <link rel="manifest" href="../manifest.webmanifest">
+  <meta name="theme-color" content="#D71920">
+  <link rel="stylesheet" href="../css/tokens.css">
+  <link rel="stylesheet" href="../css/web.css">
+</head>
+<body>
+  <div class="split">
+    <aside class="panel">
+      <a href="../index.html" aria-label="IDLC"><img class="panel__logo" src="../assets/logo/idlc-logo-horizontal.jpg" alt="IDLC financing happiness"></a>
+      <div class="panel__head">
+        <div class="kicker" data-i18n="q.eyebrow">TOOLS / TAX</div>
+        <h1 data-i18n="q.h1">Tax calculator</h1>
+      </div>
+      <div id="mode-switch" data-active="quick"></div>
+
+      <form id="quick-form" novalidate>
+        <label class="field"><span><span data-i18n="q.salary">Yearly salary</span> <span data-info="taxFreePart"></span></span>
+          <input id="salary" inputmode="numeric" autocomplete="off" data-i18n-attr="placeholder:q.salaryPh" placeholder="Tk 0">
+        </label>
+        <label class="field"><span><span data-i18n="q.youAre">You are</span> <span data-info="taxFreeLimit"></span></span>
+          <select id="category"></select>
+        </label>
+        <label class="check"><input type="checkbox" id="first-return"><span data-i18n="q.first">This is my first tax return</span></label>
+        <button type="submit" class="btn btn--red" data-i18n="q.calc">Calculate tax</button>
+      </form>
+    </aside>
+
+    <section class="result">
+      <nav class="topnav" aria-label="IDLC">
+        <span data-i18n="nav.loans">Loans</span><span data-i18n="nav.deposits">Deposits</span><span data-i18n="nav.invest">Investments</span>
+        <button type="button" class="langbtn" data-lang-toggle data-i18n="c.switchTo">বাংলা</button>
+        <a href="tel:16409" data-i18n="nav.call">Call 16409</a>
+      </nav>
+      <div class="result__body" id="result" aria-live="polite"></div>
+    </section>
+  </div>
+
+  <div class="ribbon" role="presentation"><div class="ribbon__text"><span class="ribbon__label" data-i18n="p.ribbon">WHERE TO INVEST WITH IDLC</span></div></div>
+
+  <section class="products" id="products"></section>
+
+  <div class="center"><button type="button" class="btn btn--grey" data-open-callback data-i18n="c.talk">Talk to an IDLC advisor</button></div>
+
+  <p class="foot"><span id="foot-main"></span><br><span data-i18n="q.footNote"></span></p>
+  <p class="draftnote" data-i18n="c.draft"></p>
+
+  <script src="../js/tax-rules.js"></script>
+  <script src="../js/tax-engine.js"></script>
+  <script src="../js/format.js"></script>
+  <script src="../js/strings.js"></script>
+  <script src="../js/i18n.js"></script>
+  <script src="../js/ui-common.js"></script>
+  <script src="../js/ui-quick.js"></script>
+</body>
+</html>

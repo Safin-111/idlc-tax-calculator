@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>App request a callback</title>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+@font-face{font-family:'Lato';src:url(../../assets/fonts/glacial-indifference-400.woff2) format('woff2');font-weight:400}
+@font-face{font-family:'Lato';src:url(../../assets/fonts/glacial-indifference-700.woff2) format('woff2');font-weight:700 900}
+body{margin:0}
+a{color:#A3121A}a:hover{color:#7A0D13}
+</style>
+</helmet>
+<div style="width:390px;height:844px;box-sizing:border-box;background:#F5F5F4;font-family:'Lato',sans-serif;color:#1A1A1A;display:flex;flex-direction:column;overflow:hidden">
+  <div style="background:#FFFFFF;padding:14px 16px;display:flex;align-items:center;gap:10px;border-bottom:1px solid #E4E4E4">
+    <a href="AppInvest.dc.html" aria-label="Back" style="width:44px;height:44px;display:inline-flex;align-items:center;justify-content:center;color:#1A1A1A;text-decoration:none;font-size:22px">←</a>
+    <span style="font-size:16px;font-weight:900">Request a callback</span>
+  </div>
+  <div style="padding:20px 16px;display:flex;flex-direction:column;gap:16px;flex-grow:1">
+    <div style="display:flex;flex-direction:column;gap:6px">
+      <h1 style="margin:0;font-size:24px;font-weight:900;line-height:1.2">An IDLC advisor will call you</h1>
+      <div style="font-size:15px;color:#5C5C5C;line-height:1.5">We'll bring your numbers: invest Tk 2,40,000, save Tk 24,000.</div>
+    </div>
+    <div style="background:#FFFFFF;border:1px solid #E4E4E4;border-radius:16px;padding:18px;display:flex;flex-direction:column;gap:16px">
+      <label style="display:flex;flex-direction:column;gap:6px;font-size:14px;font-weight:700">Your name<input placeholder="Full name" style="font-family:'Lato',sans-serif;font-size:16px;height:50px;padding:0 14px;border:1px solid #CFCFCF;border-radius:12px"></label>
+      <label style="display:flex;flex-direction:column;gap:6px;font-size:14px;font-weight:700">Mobile number<input placeholder="01XXXXXXXXX" style="font-family:'Lato',sans-serif;font-size:16px;height:50px;padding:0 14px;border:1px solid #CFCFCF;border-radius:12px"></label>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <span style="font-size:14px;font-weight:700">Best time to call</span>
+        <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px">
+          <button style="height:44px;border-radius:12px;border:1.5px solid #1A1A1A;background:#1A1A1A;color:#FFFFFF;font-family:'Lato',sans-serif;font-size:14px;font-weight:700">Morning</button>
+          <button style="height:44px;border-radius:12px;border:1px solid #CFCFCF;background:#FFFFFF;color:#1A1A1A;font-family:'Lato',sans-serif;font-size:14px">Afternoon</button>
+          <button style="height:44px;border-radius:12px;border:1px solid #CFCFCF;background:#FFFFFF;color:#1A1A1A;font-family:'Lato',sans-serif;font-size:14px">Evening</button>
+        </div>
+      </div>
+      <label style="display:flex;align-items:flex-start;gap:10px;font-size:14px;line-height:1.45">
+        <input type="checkbox" checked style="width:20px;height:20px;accent-color:#D71920;margin:0">
+        Share my calculation with the advisor
+      </label>
+    </div>
+    <div style="font-size:12px;color:#5C5C5C;text-align:center">Prototype: nothing is sent</div>
+    <div style="margin-top:auto">
+      <a href="AppStart.dc.html" style="display:flex;justify-content:center;align-items:center;height:54px;border-radius:14px;background:#D71920;color:#FFFFFF;font-size:16px;font-weight:700;text-decoration:none">Call me back</a>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+renderVals() {
+return {};
+}
+}
+</script>
+</body>
+</html>

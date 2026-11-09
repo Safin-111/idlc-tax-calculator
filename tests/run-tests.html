@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tax engine tests</title>
+  <style>
+    @font-face { font-family: 'Glacial Indifference'; src: url('../assets/fonts/glacial-indifference-400.woff2') format('woff2'); font-weight: 400; }
+    @font-face { font-family: 'Glacial Indifference'; src: url('../assets/fonts/glacial-indifference-700.woff2') format('woff2'); font-weight: 700; }
+    :root { --ink: #1A1A1A; --grey: #4A4A4A; --line: #E2E2E2; --panel: #F4F3F1; --red: #D71920; --green: #1E7B34; }
+    * { box-sizing: border-box; }
+    body { margin: 0; padding: 32px 16px; background: #fff; color: var(--ink); font-family: 'Glacial Indifference', sans-serif; font-size: 16px; }
+    main { max-width: 980px; margin: 0 auto; }
+    .label { font-size: 13px; letter-spacing: 2px; text-transform: uppercase; color: var(--grey); margin: 0 0 6px; }
+    h1 { margin: 0 0 16px; font-size: 32px; }
+    #summary { padding: 16px 20px; font-size: 22px; font-weight: 700; color: #fff; margin-bottom: 24px; }
+    #summary.ok { background: var(--green); }
+    #summary.bad { background: var(--red); }
+    h2 { font-size: 13px; letter-spacing: 2px; text-transform: uppercase; color: var(--grey); margin: 28px 0 8px; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { text-align: left; padding: 10px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+    th { font-size: 13px; color: var(--grey); font-weight: 400; }
+    .result { font-weight: 700; white-space: nowrap; }
+    .pass { color: var(--green); }
+    .fail { color: var(--red); }
+    .checks { font-size: 14px; color: var(--grey); }
+    .checks span { display: inline-block; margin: 0 14px 2px 0; }
+    .checks .fail { font-weight: 700; }
+    .note { margin-top: 32px; padding: 14px 16px; background: var(--panel); color: var(--grey); font-size: 14px; }
+  </style>
+</head>
+<body>
+<main>
+  <p class="label">IDLC tax calculator · prototype</p>
+  <h1>Tax engine tests</h1>
+  <div id="summary">Running…</div>
+  <div id="groups"></div>
+  <p class="note">Expected answers come from docs/TEST-CASES.md. Each case checks every number listed for it, in whole taka. Prototype · sample figures · Finance Act 2026</p>
+</main>
+
+<script src="../js/tax-rules.js"></script>
+<script src="../js/tax-engine.js"></script>
+<script src="../js/format.js"></script>
+<script src="test-cases.js"></script>
+<script>
+(function () {
+  var F = window.IDLC_FORMAT;
+  var results = window.IDLC_RUN_TESTS(window.IDLC_TAX_ENGINE, F);
+  var groups = { quick: 'Quick saver', full: 'Full calculator', format: 'Number format' };
+
+  function show(v) {
+    if (typeof v === 'number') return F.formatNumber(v);
+    if (typeof v === 'string') return '"' + v + '"';
+    return String(v);
+  }
+  function esc(s) {
+    return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; });
+  }
+
+  var passed = 0, html = '';
+  Object.keys(groups).forEach(function (mode) {
+    var rows = results.filter(function (r) { return r.mode === mode; });
+    if (!rows.length) return;
+    html += '<h2>' + groups[mode] + '</h2><table><thead><tr><th>#</th><th>Case</th><th>Checks (expected / got)</th><th>Result</th></tr></thead><tbody>';
+    rows.forEach(function (r) {
+      if (r.pass) passed++;
+      var checks = r.checks.map(function (c) {
+        var txt = esc(c.field) + ': ' + esc(show(c.expected)) + (c.pass ? ' ✓' : ' ≠ ' + esc(show(c.actual)));
+        return '<span class="' + (c.pass ? '' : 'fail') + '">' + txt + '</span>';
+      }).join('');
+      if (r.error) checks += '<span class="fail">Error: ' + esc(r.error) + '</span>';
+      html += '<tr><td><b>' + r.id + '</b></td><td>' + esc(r.title) + '</td><td class="checks">' + checks +
+              '</td><td class="result ' + (r.pass ? 'pass">PASS' : 'fail">FAIL') + '</td></tr>';
+    });
+    html += '</tbody></table>';
+  });
+
+  var failed = results.length - passed;
+  var summary = document.getElementById('summary');
+  summary.textContent = passed + ' PASS · ' + failed + ' FAIL (of ' + results.length + ')';
+  summary.className = failed ? 'bad' : 'ok';
+  document.getElementById('groups').innerHTML = html;
+  document.title = (failed ? 'FAIL ' : 'PASS ') + passed + '/' + results.length + ' — Tax engine tests';
+})();
+</script>
+</body>
+</html>

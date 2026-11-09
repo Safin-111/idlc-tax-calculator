@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title data-i18n="s.title">Income tax &amp; rebate calculator</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#D71920">
+  <link rel="icon" href="assets/icons/icon-192.png">
+  <link rel="apple-touch-icon" href="assets/icons/icon-192.png">
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/web.css">
+</head>
+<body>
+  <main class="start">
+    <button type="button" class="langbtn start__lang" data-lang-toggle data-i18n="c.switchTo">বাংলা</button>
+    <img class="start__logo" src="assets/logo/idlc-logo-stacked.png" alt="IDLC financing happiness">
+    <h1 data-i18n="s.title">Income tax &amp; rebate calculator</h1>
+    <p class="start__line" data-i18n="s.line">Prototype · sample figures</p>
+
+    <div class="start__btns">
+      <a class="btn big big--red" href="web/quick.html"><small data-i18n="s.laptop">On a laptop</small><strong data-i18n="s.web">Website tour</strong></a>
+      <a class="btn big big--ink" href="app/index.html"><small data-i18n="s.phone">On a phone</small><strong data-i18n="s.app">App tour</strong></a>
+    </div>
+
+    <div class="qr">
+      <div class="qr__box" role="img" data-i18n="s.qrBox" data-i18n-attr="aria-label:s.qrBox">QR code</div>
+      <span data-i18n="s.qr">Scan to try it on your phone</span>
+    </div>
+
+    <p class="foot" data-i18n="s.foot">Sample figures for demonstration only. Not tax advice.</p>
+    <p class="draftnote" data-i18n="c.draft"></p>
+  </main>
+
+  <script src="js/strings.js"></script>
+  <script src="js/i18n.js"></script>
+  <script>
+    IDLC_I18N.init();
+    // Lets the site be installed and used offline (only when served over http/https)
+    if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
+      navigator.serviceWorker.register('sw.js').catch(function () {});
+    }
+  </script>
+</body>
+</html>

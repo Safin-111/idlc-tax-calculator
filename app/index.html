@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title data-i18n="a.tag">Tax calculator</title>
+  <meta name="theme-color" content="#D71920">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <link rel="manifest" href="../manifest.webmanifest">
+  <link rel="icon" href="../assets/icons/icon-192.png">
+  <link rel="apple-touch-icon" href="../assets/icons/icon-192.png">
+  <link rel="stylesheet" href="../css/tokens.css">
+  <link rel="stylesheet" href="../css/web.css">
+  <link rel="stylesheet" href="../css/app.css">
+</head>
+<body class="app">
+  <div class="stage">
+    <aside class="controls no-print">
+      <img src="../assets/logo/idlc-logo-horizontal.jpg" alt="IDLC financing happiness">
+      <h2 data-i18n="a.ctrlTitle">Controls (not part of the app)</h2>
+      <div class="controls__row">
+        <span data-i18n="a.ctrlLang">Language</span>
+        <button type="button" class="langbtn" data-lang-toggle data-i18n="c.switchTo">বাংলা</button>
+      </div>
+      <a href="../index.html" data-i18n="a.ctrlBack">Back to start page</a>
+      <p class="small" data-i18n="a.ctrlHint"></p>
+      <p class="draftnote" data-i18n="c.draft"></p>
+    </aside>
+
+    <div class="phone">
+      <div class="screen" id="screen" tabindex="-1"></div>
+      <div class="sheet-layer" id="sheet" hidden></div>
+    </div>
+  </div>
+
+  <script src="../js/tax-rules.js"></script>
+  <script src="../js/tax-engine.js"></script>
+  <script src="../js/format.js"></script>
+  <script src="../js/strings.js"></script>
+  <script src="../js/i18n.js"></script>
+  <script src="../js/ui-common.js"></script>
+  <script src="../js/ui-app.js"></script>
+  <script>
+    // Lets the app be installed and used offline (only when served over http/https)
+    if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
+      navigator.serviceWorker.register('../sw.js').catch(function () {});
+    }
+  </script>
+</body>
+</html>

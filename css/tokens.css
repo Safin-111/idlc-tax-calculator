@@ -1,0 +1,38 @@
+/* tokens.css — fonts and colours shared by every page (see docs/DESIGN.md) */
+@font-face { font-family: 'Glacial Indifference'; src: url(../assets/fonts/glacial-indifference-400.woff2) format('woff2'); font-weight: 400; font-display: swap; }
+@font-face { font-family: 'Glacial Indifference'; src: url(../assets/fonts/glacial-indifference-700.woff2) format('woff2'); font-weight: 700; font-display: swap; }
+
+:root {
+  --red: #D71920;
+  --ribbon: #ED1C24;
+  --ribbon-dark: #A8161C;
+  --ink: #1A1A1A;
+  --grey-text: #4A4A4A;
+  --grey-soft: #6B6B6B;
+  --line: #E2E2E2;
+  --line-soft: #EDEDED;
+  --panel: #F4F3F1;
+  --field: #DADADA;
+  --link: #A3121A;
+  --link-hover: #7A0D13;
+  --font: 'Glacial Indifference', sans-serif;
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: #fff; color: var(--ink); font-family: var(--font); font-size: 16px; line-height: 1.4; }
+a { color: var(--link); }
+a:hover { color: var(--link-hover); }
+:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
+[hidden] { display: none !important; }
+
+/* Bangla: Glacial Indifference has no Bangla letters, so the system Bangla font takes over.
+   Letter-spacing would break Bangla joined letters, so it is switched off. */
+html[lang="bn"] body, html[lang="bn"] button, html[lang="bn"] input, html[lang="bn"] select {
+  font-family: 'Glacial Indifference', 'Nirmala UI', 'Noto Sans Bengali', 'Vrinda', sans-serif;
+}
+html[lang="bn"] * { letter-spacing: 0 !important; }
+
+/* "Draft Bangla — needs review" line; empty (and hidden) in English */
+.draftnote { margin: 12px 20px; padding: 8px 12px; background: #FFF4CC; border: 1px solid #E6D27A; color: #4A3B00; font-size: 13px; text-align: center; }
+.draftnote:empty { display: none; }
