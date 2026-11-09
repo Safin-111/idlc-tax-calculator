@@ -12,7 +12,7 @@ var FILES = [
   'js/ui-common.js', 'js/ui-quick.js', 'js/ui-full.js', 'js/ui-app.js',
   'assets/fonts/glacial-indifference-400.woff2', 'assets/fonts/glacial-indifference-700.woff2',
   'assets/logo/idlc-logo-horizontal.jpg', 'assets/logo/idlc-logo-stacked.png',
-  'assets/icons/icon-192.png', 'assets/icons/icon-512.png', 'assets/icons/icon-maskable-512.png'
+  'assets/qr.png', 'assets/icons/icon-192.png', 'assets/icons/icon-512.png', 'assets/icons/icon-maskable-512.png'
 ];
 
 self.addEventListener('install', function (event) {
