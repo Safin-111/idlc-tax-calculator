@@ -237,3 +237,10 @@ a.ms__opt:hover { background: var(--panel); }
   .printans dt { color: var(--grey-text); }
   .printans dd { margin: 0; font-weight: 700; }
 }
+
+/* "Open an account" link under each product card (links come from js/links.js) */
+.golink { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 44px; padding: 10px 20px; margin-top: 6px; border: 1.5px solid var(--ink); color: var(--ink); background: #fff; font-weight: 700; font-size: 15px; text-decoration: none; }
+.golink:hover, .golink:focus-visible { background: var(--ink); color: #fff; }
+.golink__note { display: block; font-size: 12px; color: var(--grey-text); text-align: center; }
+.product .golink { margin-top: auto; } /* lines the three buttons up along the bottom */
+@media print { .golink, .golink__note { display: none; } }

@@ -84,10 +84,12 @@
       : t('p.fundsGeneric');
     var sharesText = useSplit ? t('p.sharesSplit', { amount: tk(split.shares) }) : t('p.sharesGeneric');
 
+    // The suggested amount travels with the link as a tracking tag only
+    var amt = useSplit ? split : { dps: 0, funds: 0, shares: 0 };
     productsEl.innerHTML =
-      '<div class="product">' + ICONS.dps + '<h3>' + t('p.dps') + '</h3>' + callout(1, dpsText) + '</div>' +
-      '<div class="product">' + ICONS.funds + '<h3>' + t('p.funds') + '</h3>' + callout(2, fundsText) + '</div>' +
-      '<div class="product">' + ICONS.shares + '<h3>' + t('p.shares') + '</h3>' + callout(3, sharesText) + '</div>';
+      '<div class="product">' + ICONS.dps + '<h3>' + t('p.dps') + '</h3>' + callout(1, dpsText) + U.productLink('dps', amt.dps) + '</div>' +
+      '<div class="product">' + ICONS.funds + '<h3>' + t('p.funds') + '</h3>' + callout(2, fundsText) + U.productLink('funds', amt.funds) + '</div>' +
+      '<div class="product">' + ICONS.shares + '<h3>' + t('p.shares') + '</h3>' + callout(3, sharesText) + U.productLink('shares', amt.shares) + '</div>';
   }
 
   function renderFoot() {
@@ -133,7 +135,20 @@
   // Changing language re-writes the same answer; it does not recalculate
   I.onChange(function () { buildCategories(); if (shown) { render(); inputsChanged(); } });
 
-  // Start with a sample salary so the screen is never empty in a demo
-  U.setMoney(salaryEl, 1200000);
+  // Start with a sample salary so the screen is never empty in a demo.
+  // A link can preset the inputs for a slide demo, e.g.
+  //   quick.html?salary=1200000&cat=womanOr65&first=1&lang=en
+  // salary: whole taka · cat: a category id from tax-rules.js (general, womanOr65,
+  // disability, thirdGender, freedomFighter) · first=1: first return
+  // lang=en|bn: forces the language (the site otherwise remembers the last one used)
+  var params = {};
+  try { params = Object.fromEntries(new URLSearchParams(root.location.search)); } catch (e) { /* old browser: ignore */ }
+
+  if (params.lang === 'en' || params.lang === 'bn') I.setLang(params.lang);
+  if (params.cat && Object.prototype.hasOwnProperty.call(R.thresholds, params.cat)) catEl.value = params.cat;
+  if (params.first === '1') firstEl.checked = true;
+
+  var linkSalary = params.salary ? F.parseAmount(params.salary) : 0;
+  U.setMoney(salaryEl, linkSalary > 0 ? linkSalary : 1200000);
   calculate();
 })(window);

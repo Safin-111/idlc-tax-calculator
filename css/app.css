@@ -169,3 +169,7 @@ body.app { background: #E9E8E6; overflow: hidden; }
   .phone { width: auto; height: auto; border: 0; border-radius: 0; box-shadow: none; overflow: visible; background: #fff; }
   .screen { overflow: visible; background: #fff; }
 }
+
+/* "Open an account" link inside each investment step card */
+.golink--app { width: 100%; margin-top: 8px; border-radius: 12px; font-size: 15px; }
+.stepcard .golink__note { text-align: left; }
