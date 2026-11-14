@@ -221,6 +221,12 @@
 
   $('download').addEventListener('click', function () { root.print(); });
 
+  // "Invest now" opens the Quick saver's products; hand over salary and category
+  doc.addEventListener('click', function (e) {
+    if (!(e.target.closest && e.target.closest('a.investnow'))) return;
+    try { root.sessionStorage.setItem('idlc-handoff', JSON.stringify({ salary: state.salary, category: state.category })); } catch (err) { /* ignore */ }
+  });
+
   // ---------- start ----------
   U.init();
   buildInvList();

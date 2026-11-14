@@ -33,7 +33,7 @@
 /* ---------- mode switch ---------- */
 .ms { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px; padding: 4px; border: 1.5px solid var(--ink); border-radius: 16px; background: #fff; }
 .ms__opt { display: flex; flex-direction: column; gap: 4px; padding: 11px 14px; border-radius: 12px; text-decoration: none; background: #fff; color: var(--grey-text); min-height: 44px; }
-.ms__name { font-size: 11px; letter-spacing: 2px; color: var(--grey-soft); }
+.ms__name { font-size: 11px; letter-spacing: 2px; color: var(--grey-soft); font-weight: 700; }
 .ms__q { font-size: 15px; line-height: 1.25; }
 a.ms__opt:hover { background: var(--panel); }
 .ms__opt.is-active { background: var(--ink); color: #fff; }
@@ -78,6 +78,8 @@ a.ms__opt:hover { background: var(--panel); }
 .pair__top { font-size: 15px; color: var(--grey-text); }
 .pair__num { font-size: 30px; font-weight: 700; margin-top: 2px; }
 .pair__note { font-size: 14px; color: var(--grey-soft); margin-top: 4px; }
+.pair__note--bold { font-weight: 700; }
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
 .based { margin-top: 18px; font-size: 14px; color: var(--grey-soft); }
 .ticks { list-style: none; margin: 30px 0 0; padding: 0; display: flex; flex-direction: column; gap: 14px; font-size: 16px; line-height: 1.5; max-width: 540px; }
 .ticks li { display: flex; gap: 12px; }

@@ -54,7 +54,7 @@
       html = '<div class="result__kicker">' + t('q.kickerSave') + U.infoButton('rebate') + '</div>' +
         '<div class="bignum">' + tk(q.maxSaving) + '</div>' +
         '<div class="pair">' +
-          '<div><div class="pair__top">' + t('q.youPay') + '</div><div class="pair__num">' + tk(q.taxIfNoInvest) + '</div><div class="pair__note">' + t('q.ifNot') + '</div></div>' +
+          '<div><div class="pair__top">' + t('q.youPay') + '</div><div class="pair__num">' + tk(q.taxIfNoInvest) + '</div><div class="pair__note pair__note--bold">' + t('q.ifNot') + '</div></div>' +
           '<div><div class="pair__top">' + t('q.youPay') + '</div><div class="pair__num">' + tk(q.taxIfInvest) + '</div><div class="pair__note">' + t('q.ifInvest', { amount: tk(q.investNeeded) }) + U.infoButton('eligibleInvestment') + '</div></div>' +
         '</div>' +
         '<div class="based">' + t('q.basedOn', { amount: tk(q.taxable) }) + U.infoButton('taxableIncome') + '</div>' +
@@ -135,5 +135,22 @@
 
   // Start with a sample salary so the screen is never empty in a demo
   U.setMoney(salaryEl, 1200000);
+
+  // Coming from "Invest now" on the Full calculator: carry over the salary and
+  // category so the answer matches what the person just saw. Kept in this tab only.
+  try {
+    var handoff = JSON.parse(root.sessionStorage.getItem('idlc-handoff') || 'null');
+    root.sessionStorage.removeItem('idlc-handoff');
+    if (handoff && handoff.salary > 0) {
+      U.setMoney(salaryEl, handoff.salary);
+      if (R.thresholds[handoff.category]) catEl.value = handoff.category;
+    }
+  } catch (e) { /* storage blocked: just use the sample salary */ }
   calculate();
+
+  // Jump to the products when asked for (the page above them is built by script,
+  // so the browser's own jump can land in the wrong place)
+  if (root.location.hash === '#where-to-invest') {
+    doc.getElementById('where-to-invest').scrollIntoView();
+  }
 })(window);
