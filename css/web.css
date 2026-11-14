@@ -79,6 +79,21 @@ a.ms__opt:hover { background: var(--panel); }
 .pair__num { font-size: 30px; font-weight: 700; margin-top: 2px; }
 .pair__note { font-size: 14px; color: var(--grey-soft); margin-top: 4px; }
 .pair__note--bold { font-weight: 700; }
+
+/* Pentagon call-to-action: red, white text, pointing down at the products.
+   The soft shadow is a drop-shadow filter because clip-path would cut a box-shadow. */
+.seebtn { display: flex; width: max-content; max-width: 100%; margin-top: 22px; text-decoration: none; filter: drop-shadow(0 2px 3px rgba(0, 0, 0, .18)); animation: seebtn-bob 2.4s ease-in-out infinite; }
+.seebtn span { display: block; min-height: 58px; padding: 13px 36px 27px; background: var(--red); color: #fff; font-weight: 700; font-size: 17px; line-height: 1.2; text-align: center; clip-path: polygon(0 0, 100% 0, 100% 70%, 50% 100%, 0 70%); }
+/* Quick saver: ticks on the left, the button in the empty space on the right
+   (on narrow screens it drops underneath) */
+.ticksrow { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 32px; }
+.ticksrow .seebtn { margin-top: 30px; margin-left: auto; }
+@media (max-width: 980px) { .ticksrow .seebtn { margin-top: 22px; margin-left: 0; } }
+.seebtn:hover span, .seebtn:focus-visible span { background: #B8131A; }
+.seebtn:focus-visible { outline: 3px solid var(--ink); outline-offset: 4px; }
+@keyframes seebtn-bob { 0%, 60%, 100% { transform: translateY(0); } 80% { transform: translateY(4px); } }
+@media (prefers-reduced-motion: reduce) { .seebtn { animation: none; } }
+.hl { background: #FFE9A8; color: var(--ink); padding: 1px 6px; border-radius: 3px; }
 @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
 .based { margin-top: 18px; font-size: 14px; color: var(--grey-soft); }
 .ticks { list-style: none; margin: 30px 0 0; padding: 0; display: flex; flex-direction: column; gap: 14px; font-size: 16px; line-height: 1.5; max-width: 540px; }

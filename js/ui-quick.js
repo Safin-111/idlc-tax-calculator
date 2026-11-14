@@ -58,11 +58,12 @@
           '<div><div class="pair__top">' + t('q.youPay') + '</div><div class="pair__num">' + tk(q.taxIfInvest) + '</div><div class="pair__note">' + t('q.ifInvest', { amount: tk(q.investNeeded) }) + U.infoButton('eligibleInvestment') + '</div></div>' +
         '</div>' +
         '<div class="based">' + t('q.basedOn', { amount: tk(q.taxable) }) + U.infoButton('taxableIncome') + '</div>' +
-        '<ul class="ticks">' +
+        '<div class="ticksrow"><ul class="ticks">' +
           tick(t('q.tick1', { amount: tk(q.investNeeded), date: U.dateLabel(q.year.investBy) })) +
           tick(t('q.tick2')) +
-          tick(t('q.tick3')) +
-        '</ul>';
+          tick(t('q.tickFull')) +
+        '</ul>' +
+        '<a class="seebtn" href="#where-to-invest"><span>' + t('q.seeWhere') + '</span></a></div>';
     }
     resultEl.innerHTML = html;
   }

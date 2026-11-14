@@ -115,7 +115,10 @@
 
     $('slabs').innerHTML = '<div class="kicker">' + t('f.slabsH') + '</div>' + rc.slabs.map(line).join('') +
       line({ label: rc.slabTotal.label, value: rc.slabTotal.value, cls: 'sum' }) +
-      '<div class="note">' + rc.note + '</div>';
+      '<div class="note">' + rc.note + '</div>' +
+      (r.missedSaving > 0
+        ? '<a class="seebtn investnow no-print" href="quick.html#where-to-invest"><span>' + t('f.investBtn') + '</span></a>'
+        : '');
 
     renderPrintAnswers(r);
   }
