@@ -335,7 +335,21 @@
     I.init();
   }
 
+  // ---------- "open an account" button on each product card ----------
+  // Links live in js/links.js; words in strings.js ('p.go.dps' etc.). Opens in a new tab
+  // so the customer keeps their tax answer. Draws nothing if links.js is not loaded.
+  function productLink(product, amount, cls) {
+    var L = root.IDLC_LINKS;
+    var href = L && L.url(product, amount);
+    if (!href) return '';
+    return '<a class="' + (cls || 'golink') + '" href="' + esc(href) + '" target="_blank" rel="noopener"' +
+      ' data-product-link="' + product + '" data-amount="' + (Math.round(amount) || 0) + '">' +
+      esc(t('p.go.' + product)) + ' <span aria-hidden="true">→</span></a>' +
+      '<span class="golink__note">' + esc(t('p.goNote', { company: L.company(product) })) + '</span>';
+  }
+
   root.IDLC_UI = {
+    productLink: productLink,
     E: E, F: F, R: R, I: I, t: t, g: g,
     esc: esc, loc: loc, tk: tk, num: num, pct: pct, compact: compact, capOf: capOf,
     dateLabel: dateLabel, rangeLabel: rangeLabel, ayLabel: ayLabel, monthYear: monthYear,

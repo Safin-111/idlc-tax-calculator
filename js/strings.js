@@ -114,6 +114,10 @@
         'p.fundsGeneric': 'No cap from this year. Invest at once or monthly.',
         'p.sharesSplit': 'Optional: {amount} in the suggested split. New listed shares also count.',
         'p.sharesGeneric': 'Optional. New listed shares also count.',
+        'p.go.dps': 'Open a DPS online',
+        'p.go.funds': 'Start an IDLC SIP',
+        'p.go.shares': 'Open a BO account',
+        'p.goNote': 'Opens {company} in a new tab',
 
         // ----- website: Full calculator -----
         'f.pageTitle': 'Full calculator',
@@ -440,6 +444,10 @@
         'p.fundsGeneric': 'এ বছর থেকে কোনো সীমা নেই। একবারে বা মাসে মাসে বিনিয়োগ করা যায়।',
         'p.sharesSplit': 'ঐচ্ছিক: প্রস্তাবিত ভাগে {amount}। তালিকাভুক্ত নতুন শেয়ারও গণনা হয়।',
         'p.sharesGeneric': 'ঐচ্ছিক। তালিকাভুক্ত নতুন শেয়ারও গণনা হয়।',
+        'p.go.dps': 'অনলাইনে ডিপিএস খুলুন',
+        'p.go.funds': 'আইডিএলসি এসআইপি শুরু করুন',
+        'p.go.shares': 'বিও অ্যাকাউন্ট খুলুন',
+        'p.goNote': 'নতুন ট্যাবে {company} খুলবে',
 
         'f.pageTitle': 'সম্পূর্ণ হিসাব',
         'f.h1': 'পাঁচটি প্রশ্ন। তারপর আপনার কর।',

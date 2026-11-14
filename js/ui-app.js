@@ -138,11 +138,14 @@
         '<div class="darkcard"><div><small>' + t('a.youSave') + '</small><span class="dk-big">' + tk(r.maxSaving) + '</span></div>' +
           '<div style="text-align:right"><small>' + t('a.byInv') + '</small><span class="dk-mid">' + tk(r.investNeeded) + '</span></div></div>' +
         '<div class="stepcard"><div class="stepcard__top"><span class="stepcard__k">' + t('a.step1') + '</span><span class="stepcard__amt">' + tk(sp.dps) + '</span></div>' +
-          '<div class="stepcard__t">' + t('p.dps') + '</div><div class="muted">' + t('a.dpsDesc', { monthly: tk(Math.ceil(sp.dps / 12)), cap: cap }) + '</div></div>' +
+          '<div class="stepcard__t">' + t('p.dps') + '</div><div class="muted">' + t('a.dpsDesc', { monthly: tk(Math.ceil(sp.dps / 12)), cap: cap }) + '</div>' +
+          U.productLink('dps', sp.dps, 'golink golink--app') + '</div>' +
         '<div class="stepcard"><div class="stepcard__top"><span class="stepcard__k">' + t('a.step2') + '</span><span class="stepcard__amt">' + tk(sp.funds) + '</span></div>' +
-          '<div class="stepcard__t">' + t('p.funds') + '</div><div class="muted">' + t('a.fundsDesc') + '</div></div>' +
+          '<div class="stepcard__t">' + t('p.funds') + '</div><div class="muted">' + t('a.fundsDesc') + '</div>' +
+          U.productLink('funds', sp.funds, 'golink golink--app') + '</div>' +
         '<div class="stepcard stepcard--opt"><div class="stepcard__top"><span class="stepcard__k">' + t('a.optional') + '</span><span class="stepcard__amt">' + tk(sp.shares) + '</span></div>' +
-          '<div class="stepcard__t">' + t('p.shares') + '</div><div class="muted">' + t('a.sharesDesc') + '</div></div>' +
+          '<div class="stepcard__t">' + t('p.shares') + '</div><div class="muted">' + t('a.sharesDesc') + '</div>' +
+          U.productLink('shares', sp.shares, 'golink golink--app') + '</div>' +
         '<div class="tiny" style="padding:0 4px">' + t('a.alsoCount') + '</div>' +
         '<div class="protoline">' + t('q.footNote') + '</div>' +
         '<div class="stack spacer no-print"><button type="button" class="appbtn" data-cbfrom="invest">' + t('a.callback') + '</button>' +
@@ -442,6 +445,17 @@
   I.onChange(function () { rerender(); });
 
   // ---------- start ----------
+  // A link can preset the inputs for a demo, e.g. index.html?salary=600000&cat=womanOr65#quick
+  // (same options as web/quick.html: salary, cat, first=1, lang=en|bn; the #part picks the screen)
+  (function presetFromLink() {
+    var p = {};
+    try { p = Object.fromEntries(new URLSearchParams(root.location.search)); } catch (e) { return; }
+    if (p.lang === 'en' || p.lang === 'bn') I.setLang(p.lang);
+    var sal = p.salary ? F.parseAmount(p.salary) : 0;
+    if (sal > 0) { S.quick.salary = sal; S.full.salary = sal; }
+    if (p.cat && CATS.indexOf(p.cat) >= 0) { S.quick.category = p.cat; S.full.category = p.cat; }
+    if (p.first === '1') S.quick.first = true;
+  })();
   I.init();
   show(viewFromHash());
 })(window);

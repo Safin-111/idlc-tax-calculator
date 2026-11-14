@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Live demo · IDLC tax calculator</title>
+  <link rel="stylesheet" href="../css/tokens.css">
+  <style>
+    /*
+     * demo/index.html — the presentation demo (slide 7).
+     * Left: numbered customer tasks. Right: the REAL calculator inside a phone or laptop frame.
+     * Click a task (or press → / ←) and the screen jumps to that step. You can still type in it.
+     * Keys: → next task · ← previous · P phone · L laptop · F full screen.
+     * Works offline (double-click) and online (GitHub Pages).
+     */
+    html, body { height: 100%; }
+    body { background: var(--panel); overflow: hidden; }
+    .deck { display: grid; grid-template-columns: minmax(340px, 34%) 1fr; height: 100vh; }
+
+    /* ----- left panel ----- */
+    .left { background: #fff; padding: 36px 40px 28px; display: flex; flex-direction: column; gap: 18px; border-right: 1px solid var(--line); overflow: auto; }
+    .brand { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    .brand img { height: 30px; }
+    .switch { display: inline-flex; border: 1.5px solid var(--ink); border-radius: 16px; padding: 3px; gap: 3px; }
+    .switch button { font: inherit; font-size: 13px; font-weight: 700; letter-spacing: 1px; border: 0; border-radius: 13px; padding: 7px 14px; background: #fff; color: var(--grey-soft); cursor: pointer; min-height: 34px; }
+    .switch button[aria-pressed="true"] { background: var(--ink); color: #fff; }
+    .kicker { font-size: 13px; letter-spacing: 2px; font-weight: 700; color: var(--grey-soft); margin: 6px 0 -8px; }
+    h1 { margin: 0; font-size: 30px; line-height: 1.15; }
+    .sub { margin: 0; color: var(--grey-text); font-size: 17px; }
+    ol.tasks { list-style: none; margin: 6px 0 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+    .task { display: grid; grid-template-columns: 34px 1fr; gap: 14px; align-items: start; width: 100%; text-align: left; font: inherit; color: inherit; background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; cursor: pointer; transition: border-color .15s, box-shadow .15s, opacity .15s; opacity: .62; }
+    .task:hover { opacity: .9; }
+    .task[aria-current="step"] { opacity: 1; border-color: var(--ink); box-shadow: 0 6px 18px rgba(0,0,0,.08); }
+    .task__n { width: 34px; height: 34px; border-radius: 50%; background: var(--line-soft); color: var(--ink); font-weight: 700; display: flex; align-items: center; justify-content: center; }
+    .task[aria-current="step"] .task__n { background: var(--red); color: #fff; }
+    .task__t { font-weight: 700; font-size: 18px; display: block; }
+    .task__d { display: block; color: var(--grey-text); font-size: 15px; margin-top: 2px; }
+    .task__vs { display: none; margin-top: 8px; padding: 8px 10px; background: var(--panel); border-radius: 8px; font-size: 13.5px; color: var(--grey-text); }
+    .task__vs b { color: var(--ink); }
+    .task[aria-current="step"] .task__vs { display: block; }
+    .foot { margin-top: auto; font-size: 12.5px; color: var(--grey-soft); display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+    kbd { font: inherit; font-size: 12px; border: 1px solid var(--field); border-radius: 4px; padding: 0 5px; background: #fff; }
+
+    /* ----- right: device stage ----- */
+    .stage { position: relative; display: flex; flex-direction: column; gap: 14px; align-items: center; justify-content: center; padding: 28px; min-width: 0; }
+    .callout { background: var(--ink); color: #fff; font-size: 14px; font-weight: 700; padding: 8px 14px; border-radius: 999px; white-space: nowrap; max-width: 90%; overflow: hidden; text-overflow: ellipsis; z-index: 2; }
+    .device { position: relative; flex: none; }
+    .device iframe { position: absolute; top: 0; left: 0; border: 0; background: #fff; transform-origin: 0 0; }
+
+    /* phone: 390 × 844 screen inside a rounded bezel */
+    .phone { border-radius: 44px; background: #111; padding: 12px; box-shadow: 0 24px 60px rgba(0,0,0,.25); }
+    .phone .screen { position: relative; overflow: hidden; border-radius: 32px; background: #fff; }
+
+    /* laptop: 1366 × 768 screen, bezel and a base */
+    .laptop .lid { background: #111; border-radius: 16px 16px 0 0; padding: 14px 14px 18px; box-shadow: 0 24px 60px rgba(0,0,0,.22); }
+    .laptop .screen { position: relative; overflow: hidden; background: #fff; border-radius: 3px; }
+    .laptop .base { height: 16px; background: linear-gradient(#cfcfcf, #a9a9a9); border-radius: 0 0 14px 14px; margin: 0 -4%; }
+    .laptop .base::before { content: ''; display: block; width: 16%; height: 6px; margin: 0 auto; background: #9a9a9a; border-radius: 0 0 8px 8px; }
+
+    @media (max-width: 900px) {
+      body { overflow: auto; }
+      .deck { grid-template-columns: 1fr; height: auto; }
+      .left { border-right: 0; padding: 24px 16px; }
+      .stage { height: 80vh; padding: 16px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="deck">
+    <section class="left" aria-label="Demo steps">
+      <div class="brand">
+        <img src="../assets/logo/idlc-logo-horizontal.jpg" alt="IDLC">
+        <div class="switch" role="group" aria-label="Device">
+          <button type="button" data-scene="phone" aria-pressed="true">PHONE</button>
+          <button type="button" data-scene="laptop" aria-pressed="false">WEBSITE</button>
+        </div>
+      </div>
+      <div class="kicker" id="kicker"></div>
+      <h1 id="title"></h1>
+      <p class="sub" id="sub"></p>
+      <ol class="tasks" id="tasks"></ol>
+      <div class="foot">
+        <span>Live prototype · Finance Act 2026 · sample figures</span>
+        <span><kbd>←</kbd> <kbd>→</kbd> steps · <kbd>P</kbd> <kbd>L</kbd> device · <kbd>F</kbd> full screen</span>
+      </div>
+    </section>
+
+    <section class="stage" id="stage" aria-label="Device screen">
+      <div class="callout" id="callout" aria-live="polite"></div>
+      <div class="device" id="device"></div>
+    </section>
+  </main>
+
+  <script>
+  (function () {
+    'use strict';
+
+    // ---------------------------------------------------------------------------
+    // THE SCRIPT OF THE DEMO. Edit words here; "src" is the screen each step opens.
+    // Links use the presets built into the calculator: salary, cat, first=1, lang.
+    // "vs" = what IDLC AML's current calculator (idlcamc.com) does at the same step.
+    // ---------------------------------------------------------------------------
+    var SCENES = {
+      phone: {
+        device: 'phone', w: 390, h: 844,
+        kicker: 'ON THE PHONE',
+        title: 'A salaried customer goes from salary to an IDLC account in three taps.',
+        sub: 'Tk 12 lakh salary, general taxpayer.',
+        tasks: [
+          { t: 'Enter salary and taxpayer type',
+            d: 'Tax owed, the saving and the amount to invest, at once.',
+            vs: '<b>idlcamc.com:</b> no taxpayer type, and no tax-owed figure.',
+            callout: 'You owe Tk 45,000 · invest Tk 2.4 lakh · save Tk 24,000',
+            src: '../app/index.html?salary=1200000&cat=general&lang=en#quick' },
+          { t: 'See where to invest across IDLC',
+            d: 'DPS first, then funds, then shares, each with its amount.',
+            vs: '<b>idlcamc.com:</b> points only to IDLC mutual funds.',
+            callout: 'Three IDLC companies, one plan · tap "Open a DPS online"',
+            src: '../app/index.html?salary=1200000&cat=general&lang=en#invest' },
+          { t: 'Act: open an account or ask for a call',
+            d: 'Each card opens the right IDLC sign-up page; or book a callback.',
+            vs: '<b>idlcamc.com:</b> "Talk to an expert" for funds only.',
+            callout: 'Callback with the calculation attached',
+            src: '../app/index.html?salary=1200000&cat=general&lang=en#callback' }
+        ]
+      },
+      laptop: {
+        device: 'laptop', w: 1366, h: 768,
+        kicker: 'ON THE WEBSITE',
+        title: 'The same engine gives a correct answer for every kind of taxpayer.',
+        sub: 'Quick saver for a fast answer, Full calculator for the return.',
+        tasks: [
+          { t: 'Below the tax-free limit? Told plainly.',
+            d: 'Tk 6 lakh salary: you pay no tax, so no rebate to chase.',
+            vs: '<b>idlcamc.com:</b> says this person can save <b>Tk 12,000</b>.',
+            callout: 'Tk 6 lakh salary → "You pay no tax at this salary"',
+            src: '../web/quick.html?salary=600000&cat=general&lang=en' },
+          { t: 'Taxpayer type changes the answer',
+            d: 'A woman earning Tk 12 lakh owes Tk 37,500, not Tk 45,000.',
+            vs: '<b>idlcamc.com:</b> one rule for everyone; no tax owed shown.',
+            callout: 'Woman / 65+: higher tax-free limit, lower tax',
+            src: '../web/quick.html?salary=1200000&cat=womanOr65&lang=en' },
+          { t: 'Full calculator: list every investment',
+            d: 'DPS, Sanchayapatra, PF, funds… each with its legal cap, then the exact tax and a PDF.',
+            vs: '<b>idlcamc.com:</b> one "amount invested" box.',
+            callout: 'Itemised investments → exact tax to pay, slab by slab',
+            src: '../web/full.html' }
+        ]
+      }
+    };
+
+    var $ = function (id) { return document.getElementById(id); };
+    var stage = $('stage'), deviceEl = $('device');
+    var scene = 'phone', step = 0, frame = null, frameSrc = '';
+
+    function buildDevice(s) {
+      var shell = s.device === 'phone'
+        ? '<div class="phone"><div class="screen" id="scr"><iframe id="frame" title="Calculator on a phone"></iframe></div></div>'
+        : '<div class="laptop"><div class="lid"><div class="screen" id="scr"><iframe id="frame" title="Calculator on a laptop"></iframe></div></div><div class="base"></div></div>';
+      deviceEl.innerHTML = shell;
+      frame = $('frame'); frameSrc = '';
+      frame.style.width = s.w + 'px';
+      frame.style.height = s.h + 'px';
+      fit();
+    }
+
+    // Scales the real-size screen (390×844 or 1366×768) down to fit the stage
+    function fit() {
+      var s = SCENES[scene];
+      var bezel = s.device === 'phone' ? 24 : 28;
+      var extraH = s.device === 'phone' ? 24 : 32 + 16;
+      var availW = stage.clientWidth - 56 - bezel;
+      var availH = stage.clientHeight - 90 - extraH;
+      var k = Math.min(availW / s.w, availH / s.h, 1);
+      var scr = $('scr');
+      scr.style.width = Math.floor(s.w * k) + 'px';
+      scr.style.height = Math.floor(s.h * k) + 'px';
+      frame.style.transform = 'scale(' + k + ')';
+    }
+
+    function render() {
+      var s = SCENES[scene];
+      $('kicker').textContent = s.kicker;
+      $('title').textContent = s.title;
+      $('sub').textContent = s.sub;
+      $('tasks').innerHTML = s.tasks.map(function (task, i) {
+        return '<li><button type="button" class="task" data-step="' + i + '"' + (i === step ? ' aria-current="step"' : '') + '>' +
+          '<span class="task__n">' + (i + 1) + '</span>' +
+          '<span><span class="task__t">' + task.t + '</span><span class="task__d">' + task.d + '</span>' +
+          '<span class="task__vs">' + task.vs + '</span></span></button></li>';
+      }).join('');
+      document.querySelectorAll('[data-scene]').forEach(function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-scene') === scene)); });
+      var task = s.tasks[step];
+      $('callout').textContent = task.callout;
+      if (task.src !== frameSrc) { frame.src = task.src; frameSrc = task.src; }
+    }
+
+    function setScene(name) {
+      if (!SCENES[name]) return;
+      scene = name; step = 0;
+      buildDevice(SCENES[name]);
+      render();
+    }
+    function setStep(i) {
+      var n = SCENES[scene].tasks.length;
+      step = Math.max(0, Math.min(n - 1, i));
+      render();
+    }
+
+    document.addEventListener('click', function (e) {
+      var b = e.target.closest('[data-step]');
+      if (b) { setStep(Number(b.getAttribute('data-step'))); return; }
+      var sc = e.target.closest('[data-scene]');
+      if (sc) setScene(sc.getAttribute('data-scene'));
+    });
+    document.addEventListener('keydown', function (e) {
+      // Typing inside the calculator happens in the iframe, so these keys never steal it
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === 'PageDown') { e.preventDefault(); setStep(step + 1); }
+      else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp' || e.key === 'PageUp') { e.preventDefault(); setStep(step - 1); }
+      else if (e.key === 'p' || e.key === 'P') setScene('phone');
+      else if (e.key === 'l' || e.key === 'L') setScene('laptop');
+      else if (e.key === 'f' || e.key === 'F') {
+        if (document.fullscreenElement) document.exitFullscreen(); else if (document.documentElement.requestFullscreen) document.documentElement.requestFullscreen();
+      }
+    });
+    window.addEventListener('resize', fit);
+
+    // Open on a given device/step from the link, e.g. demo/index.html?scene=laptop&step=2
+    var q = new URLSearchParams(location.search);
+    setScene(q.get('scene') === 'laptop' ? 'laptop' : 'phone');
+    if (q.get('step')) setStep(Number(q.get('step')) - 1);
+  })();
+  </script>
+</body>
+</html>
